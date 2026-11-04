@@ -1250,9 +1250,18 @@ void DrawFpsOverlay() {
     }
 
     const ImGuiIO& io = ImGui::GetIO();
+#if defined(__ANDROID__)
+    // Clear of the rounded corners and the camera, and readable at arm's length on a small screen.
+    const float kMargin = io.DisplaySize.y * 0.03f;
+    const float sideMargin = io.DisplaySize.x * 0.07f;
+    constexpr float kFontScale = 2.4f;
+#else
     constexpr float kMargin = 10.0f;
+    constexpr float sideMargin = kMargin;
+    constexpr float kFontScale = 1.0f;
+#endif
     const float top = g_topBarVisible ? ImGui::GetFrameHeight() + kMargin : kMargin;
-    ImGui::SetNextWindowPos(ImVec2(io.DisplaySize.x - kMargin, top), ImGuiCond_Always, ImVec2(1.0f, 0.0f));
+    ImGui::SetNextWindowPos(ImVec2(io.DisplaySize.x - sideMargin, top), ImGuiCond_Always, ImVec2(1.0f, 0.0f));
     ImGui::SetNextWindowBgAlpha(0.55f);
     constexpr ImGuiWindowFlags kFlags = ImGuiWindowFlags_AlwaysAutoResize |
                                          ImGuiWindowFlags_NoDecoration |
@@ -1262,6 +1271,7 @@ void DrawFpsOverlay() {
                                          ImGuiWindowFlags_NoNav |
                                          ImGuiWindowFlags_NoSavedSettings;
     if (ImGui::Begin("FPS Overlay", nullptr, kFlags)) {
+        ImGui::SetWindowFontScale(kFontScale);
         if (!g_showFps) {
         } else if (presentTiming.sampleCount == 0) {
             ImGui::TextUnformatted("FPS: --");

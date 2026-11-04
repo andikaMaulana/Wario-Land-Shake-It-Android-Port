@@ -1,0 +1,49 @@
+plugins {
+    id 'com.android.application'
+}
+
+// Everything built from the game stays in build/android-arm64 (tools/build-android.sh fills it).
+def nativeBuild = "${rootDir}/../build/android-arm64"
+
+android {
+    // The JNI entry points in runtime/src/android/android_bridge.cpp fix this Java package.
+    namespace 'com.wither.nsmbw'
+    compileSdk 35
+    ndkVersion '28.2.13676358'
+
+    defaultConfig {
+        applicationId 'com.wariorecomp.app'
+        // guest_flat_memory.cpp needs memfd_create, which bionic has from API 30.
+        minSdk 30
+        targetSdk 35
+        versionCode 1
+        versionName '0.1'
+        ndk { abiFilters 'arm64-v8a' }
+    }
+
+    sourceSets {
+        main {
+            java.srcDirs += "${nativeBuild}/apk/sdl-java"
+            jniLibs.srcDirs = ["${nativeBuild}/apk/jniLibs"]
+            assets.srcDirs = ["${nativeBuild}/apk/assets"]
+        }
+    }
+
+    // libadrenotools installs its hooks from nativeLibraryDir, which needs the libraries unpacked.
+    packaging {
+        jniLibs {
+            useLegacyPackaging true
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.debug
+        }
+    }
+}

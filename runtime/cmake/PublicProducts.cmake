@@ -91,7 +91,7 @@ elseif(MKW_PLATFORM_LINUX)
     # media monitoring).
     target_link_libraries(mkw_runtime_common PRIVATE mkw::libco ${CMAKE_DL_LIBS})
 elseif(MKW_PLATFORM_ANDROID)
-    target_link_libraries(mkw_runtime_common PRIVATE android log ${CMAKE_DL_LIBS})
+    target_link_libraries(mkw_runtime_common PRIVATE android log adrenotools ${CMAKE_DL_LIBS})
 endif()
 
 if(MKW_PLATFORM_MACOS)
@@ -249,8 +249,11 @@ function(mkw_configure_product target)
         # objects call into. SDL's Android activity loads the product as libmain.so and runs its
         # exported SDL_main (runtime/src/main.cpp). 16 KiB pages keep it loadable on Android 15+
         # devices that use them.
-        target_link_libraries(${target} PRIVATE android log ${CMAKE_DL_LIBS})
-        target_link_options(${target} PRIVATE "LINKER:-z,max-page-size=16384" "LINKER:--no-undefined")
+        target_link_libraries(${target} PRIVATE android log adrenotools ${CMAKE_DL_LIBS})
+        # --wrap=dlopen: Dawn opens libvulkan.so itself; src/android/custom_driver.cpp answers that call.
+        target_link_options(${target} PRIVATE "LINKER:-z,max-page-size=16384" "LINKER:--no-undefined"
+            "LINKER:--wrap=dlopen")
+        add_dependencies(${target} main_hook hook_impl)
         set_target_properties(${target} PROPERTIES OUTPUT_NAME main)
     endif()
     if(MKW_PLATFORM_WINDOWS)

@@ -81,6 +81,23 @@ set(MKW_NATIVE_PREBUILT_EXPORT_DIR "" CACHE PATH
 # consume this one definition.
 set(MKW_CRYPTOPP_INTERFACE_DEFINITIONS CRYPTOPP_DISABLE_ASM CRYPTOPP_NO_GLOBAL_BYTE)
 
+# Android: custom Vulkan drivers (Turnip and others) go through libadrenotools, which hooks the system
+# loader so its swapchain keeps working. See src/android/custom_driver.cpp.
+if(MKW_PLATFORM_ANDROID)
+    include(FetchContent)
+    FetchContent_Declare(mkw_adrenotools
+        GIT_REPOSITORY https://github.com/bylaws/libadrenotools.git
+        GIT_TAG 8fae8ce254dfc1344527e05301e43f37dea2df80
+    )
+    FetchContent_MakeAvailable(mkw_adrenotools)
+    # This library reads the code of the real dlopen to find the linker's internals, so it must not get
+    # the --wrap=dlopen wrapper that the product link gives everything else.
+    target_compile_definitions(linkernsbypass PRIVATE dlopen=__real_dlopen)
+    # The hook library links it too, and only --wrap resolves __real_dlopen to dlopen.
+    target_compile_definitions(hook_impl PRIVATE dlopen=__real_dlopen)
+    target_link_options(hook_impl PRIVATE "LINKER:--wrap=dlopen")
+endif()
+
 # Riivolution XML is parsed with pugixml, matching the parser used by Dolphin.
 # The four upstream files from v1.15 (ee86beb30e4973f5feffe3ce63bfa4fbadf72f38)
 # are vendored so builds remain usable with FETCHCONTENT_FULLY_DISCONNECTED.

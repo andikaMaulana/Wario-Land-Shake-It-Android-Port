@@ -1,0 +1,16 @@
+# Code and data from the game: never publish these.
+/game/
+/generated/
+/build/
+/Play/
+*.apk
+*.iso
+*.rvz
+*.wbfs
+
+# Build output.
+/build-logs/
+/nb-linux/
+
+# A personal launcher icon that overrides the one in the repository.
+/android/app/src/release/res/

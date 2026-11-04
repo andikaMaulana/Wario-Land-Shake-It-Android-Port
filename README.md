@@ -246,6 +246,7 @@ far, audio, 16:9, gamepad and keyboard. Still to test or to do:
 - **Aurora** — Luke Street: Wii GX graphics on WebGPU (MIT). Dawn, SDL3 and the other components are listed in
   [`fw/THIRD-PARTY-NOTICES.md`](fw/THIRD-PARTY-NOTICES.md).
 - **[nod / nodtool](https://github.com/encounter/nod)** — Luke Street: Wii disc image reading (MIT).
+- **[libadrenotools](https://github.com/bylaws/libadrenotools)** — Billy Laws: custom GPU drivers on Android (BSD-2-Clause).
 - **[Dolphin Emulator](https://dolphin-emu.org)** — Wii SDK function signature database (GPL-2.0+).
 - **[llvm-mingw](https://github.com/mstorsjo/llvm-mingw)**, **CMake**, **Ninja** and **.NET** — building.
 
