@@ -9,6 +9,8 @@ by **Santiago109**. The game's PowerPC code is **statically recompiled** to C++ 
 [WiiCompiled](https://github.com/patchzyy/Wiicompiled) and runs as a regular Windows or Linux program, **not in
 an emulator**: the Wii system libraries (video, audio, controllers, disc, saves) are replaced with native code.
 
+> 📱 **This fork adds an Android port** (branch `android-port`). See [Android](#android-experimental).
+
 <p align="center">
   <img src="screenshots/game-1.png" width="32%" alt="Wario Land: Shake It! on PC">
   <img src="screenshots/game-2.png" width="32%" alt="A level">
@@ -137,6 +139,53 @@ PowerShell and its own compiler, which don't work under Proton/Wine. SteamOS can
 first build downloads about 1 GB more for that container and needs internet. After that, **PLAY** works as usual,
 and to play in Game Mode add `Play/WarioRecomp` as a non-Steam game (Steam → *Add a Non-Steam Game*).
 
+## Android (experimental)
+
+This fork builds the port for Android phones. It runs natively, not in an emulator, with the same recompiled
+game code as the PC version.
+
+There is **no APK to download, and none will be published**: an APK contains code and data from the game, so
+every user builds their own on a PC, from **their own copy** of the game, and keeps it for their own devices.
+Please don't share it.
+
+**Requirements**
+
+- A 64-bit phone with Android 11 or later and Vulkan. Tested on one phone so far: ASUS Zenfone 10 (Adreno 740,
+  Android 15).
+- A Linux PC with the tools from [How to play (Linux)](#how-to-play-linux-experimental), plus the Android SDK
+  with NDK 28.2, JDK 17 and Gradle 8.9 or later.
+- Your own *Wario Land: Shake It!* (US, `RWLE01`, unmodified).
+
+**Building**
+
+```bash
+tools/build-wario.sh --disc /path/to/game.iso   # translates the game (once)
+tools/build-android.sh                          # builds android/app/build/outputs/apk/release/app-release.apk
+adb install -r android/app/build/outputs/apk/release/app-release.apk
+```
+
+**First start:** open the app and, on the **Game** tab, press **IMPORT DISC IMAGE** and pick your `.iso`, `.rvz`
+or `.wbfs` (it needs about 8 GB free while importing), or **CHOOSE FOLDER** for an already extracted game. Then
+press **PLAY**.
+
+**In the app**
+
+| Tab | What's there |
+|---|---|
+| Game | Game folder, disc import, short intro |
+| Graphics | Resolution, aspect ratio, V-Sync, FPS counter, GPU compatibility, shader cache |
+| Audio | Volume, mute |
+| Controls | On-screen button size, opacity and layout, phone tilt and shake, gamepad mapping |
+| Saves | Automatic and manual backups, restore |
+| GPU Driver | Custom Vulkan drivers for Adreno, imported from a `.zip` or downloaded from GitHub |
+
+The on-screen buttons are a sideways Wii Remote: **JUMP** is 2, **RUN** is 1. Shaking the phone shakes the
+remote, and tilting it tilts the remote. **A**, **JUMP** or **+** skip the intro. **EXIT** or Android's Back
+returns to the launcher.
+
+Custom GPU drivers are third-party code that runs inside the game. If the game stops starting after you choose
+one, select **System default** on the **GPU Driver** tab.
+
 ## Controls
 
 | Action (sideways Wii Remote) | Keyboard | DualSense / PlayStation |
@@ -222,6 +271,7 @@ The first time, point the build at your game: import it in the launcher, or run
 | `runtime/` | The runtime adapted to Wario (adapted from WiiCompiled's runtime) |
 | `aurora/` | Aurora, the Wii GX graphics layer (adapted from WiiCompiled's copy) |
 | `tools/` | Build scripts (port, launcher, release package) |
+| `android/` | The Android app: launcher, touch controls, motion (Java) |
 | `launcher-avalonia/` | The launcher (C# / Avalonia, Windows and Linux) |
 | `launcher/` | The previous launcher (C# WinForms, Windows only; up to 0.2.0) |
 | `local-assets/` | Launcher icon and header image (fan art by Dreaminerryday) |
