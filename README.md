@@ -1,145 +1,13 @@
-# WarioRecomp — Wario Land: Shake It! for PC
+# Wario Land: Shake It! — Android port
 
-> ⚠️ **Testing build.** The game boots, saves and is playable, but parts of it are still untested: expect
-> graphical glitches, crashes or features that don't respond yet. If you find one, please open an *issue* and
-> attach the log (`Play\UserData\Logs\...\console.log`, or the launcher's **Log** page).
+> ⚠️ **Experimental.** The game boots and plays, but parts of it are still untested: expect graphical glitches,
+> crashes or features that don't respond yet. If you find one, please open an *issue* and attach the log
+> (`Android/data/com.wariorecomp.app/files/Logs/.../console.log`).
 
-**WarioRecomp** is an unofficial native PC port of *Wario Land: Shake It!* (Wii, 2008, US release `RWLE01`),
-by **Santiago109**. The game's PowerPC code is **statically recompiled** to C++ with
-[WiiCompiled](https://github.com/patchzyy/Wiicompiled) and runs as a regular Windows or Linux program, **not in
-an emulator**: the Wii system libraries (video, audio, controllers, disc, saves) are replaced with native code.
-
-> 📱 **This fork adds an Android port** (branch `android-port`). See [Android](#android-experimental).
-
-<p align="center">
-  <img src="screenshots/game-1.png" width="32%" alt="Wario Land: Shake It! on PC">
-  <img src="screenshots/game-2.png" width="32%" alt="A level">
-  <img src="screenshots/game-3.png" width="32%" alt="A level">
-</p>
-<p align="center">
-  <img src="screenshots/game-16x9-1.png" width="48%" alt="Full 16:9 in a level: no side panels">
-  <img src="screenshots/game-16x9-2.png" width="48%" alt="Full 16:9 in a level: the level across the whole screen">
-  <br><sub>Full 16:9 in levels (experimental): no side panels, the level fills the screen.</sub>
-</p>
-<p align="center">
-  <img src="screenshots/launcher.png" width="70%" alt="The launcher">
-</p>
-
-## Features
-
-- **Render resolution** from the original 480p up to 720p, 1080p and 1440p.
-- **Aspect ratio:** true 16:9 widescreen (the game itself draws wider), fill the window, cinematic 2.39:1, or
-  the original 4:3.
-- **Full 16:9 in levels** *(experimental, Display page)*: removes the side panels the game frames its 4:3 play
-  area with, and shows the level across the whole screen. The camera, the room edges and what the game draws all
-  follow the wider view (the mission and treasure icons are still shown in the pause menu).
-- **Windowed, borderless or exclusive fullscreen** (F11 switches in game), VSync and an FPS counter.
-- **Direct3D 12 or Vulkan** (through Aurora / Dawn).
-- **Windows and Linux** *(Linux is experimental)*.
-- **Experimental frame interpolation** to 120, 180 or 240 FPS (the game still runs at 60; the frames in between
-  are interpolated). It looks smoothest when the monitor runs at that rate (120, 180 or 240 Hz); each extra frame
-  draws the scene again, so higher modes need a stronger GPU.
-- **Gamepad and keyboard** with full remapping: Xbox, PlayStation (DualSense / DualShock 4) and Nintendo Pro
-  Controller.
-- **Wii Remote motion:**
-  - **shake** with L2/R2 (continuous shaking while held, like on the Wii);
-  - **tilt** with L1/R1 (30°) or with the **left stick**, which aims up to 85° in the direction you push;
-  - **DualSense accelerometer**: on by default. Tilt the controller itself like a sideways Wii Remote;
-    the left stick, L1/R1 (tilt) and L2/R2 (shake) work at the same time and take over while held. Click the
-    touchpad to turn the sensors off.
-- **Skippable intro** with one button .
-- **Launcher** with display, graphics, audio, game and controls settings, disc import, save backups, the game
-  log and one-click install.
-- **Import the game from your own disc image:** `.iso`, `.wbfs`, `.ciso`, `.rvz`, `.wia` or `.gcz`.
-- **Automatic save backups** before every start (the last 10 are kept).
-- **Texture packs:** dump the game's textures and load high-resolution replacements.
-- Game language (English, Spanish, French) and launcher language (English, Spanish).
-
-## Game data
-
-This repository and its downloads **contain nothing from the game**: no game executable, no game data and no
-translated code. You need **your own copy** of *Wario Land: Shake It!* (US, `RWLE01`, unmodified). The
-launcher reads it, checks that it is the right one (`main.dol` with SHA-256 `053BE60D…912A`) and **builds the
-port on your PC**, the same way the WiiCompiled installer does.
-
-## How to play (Windows)
-
-**Requirements**
-
-- 64-bit Windows 10 or 11.
-- A graphics card with Direct3D 12 or Vulkan.
-- About 3 GB of free space for the build, plus 4.4 GB if the launcher extracts your disc image.
-- 16 GB of RAM or more recommended while building.
-- Your disc as `.iso`, `.wbfs`, `.ciso` or `.rvz` (or already extracted to a folder with `sys\` and `files\`).
-
-The download (~250 MB) already includes the compiler and every build tool, so installing needs no internet.
-
-**Steps**
-
-1. Go to the [Releases page](https://github.com/santiagovalencia109/Wario-Land-Shake-It-Native-PC/releases)
-   and, under **Assets** of the newest version, download **`WarioRecomp-<version>.zip`** (about 250 MB). That
-   zip is all you need: the launcher is inside it.
-   - Not **Source code (zip)** / **(tar.gz)**: GitHub adds those to every release and they have no launcher.
-   - Not the separate **`WarioLauncher.exe`** either: it is only there for the launcher's automatic update and
-     can't install anything on its own.
-2. Unzip the whole zip to a folder, e.g. `D:\WarioRecomp` (right click → *Extract All*). Don't run anything from
-   inside the zip without extracting it.
-3. In that folder, open **`WarioLauncher.exe`** (next to the `Play`, `runtime` and `tools` folders). If Windows
-   hides file extensions it shows as `WarioLauncher` with the Wario icon; `WarioLauncher.exe.config` next to it is
-   only a settings file. Windows may warn because the launcher isn't signed: *More info → Run anyway*.
-4. The launcher opens on **Install**: press **Install**, then pick your disc image and the folder to extract it to.
-5. Wait while it extracts the game and builds the port on your PC (15 to 45 minutes depending on the PC); the
-   progress is shown on the page.
-6. Press **PLAY**.
-
-## How to play (Linux, experimental)
-
-On Linux the port is built with the tools of your distribution (the Windows download brings its own compiler;
-the Linux one doesn't), so there is one extra step: installing them once.
-
-**Requirements**
-
-- 64-bit Linux (x86-64) with a desktop (X11 or Wayland).
-- A graphics driver with Vulkan.
-- The same free space, RAM and disc image as on Windows.
-
-**Steps**
-
-1. Install the build tools and libraries once. On Ubuntu / Debian, open a terminal and run:
-   ```
-   sudo apt install build-essential clang cmake ninja-build pkg-config git curl ca-certificates \
-     libx11-dev libxcursor-dev libxi-dev libxrandr-dev libxss-dev libxkbcommon-dev libwayland-dev \
-     wayland-protocols libegl-dev libdrm-dev libgbm-dev libasound2-dev libpulse-dev libudev-dev \
-     libdbus-1-dev libxtst-dev libxfixes-dev libpipewire-0.3-dev libvulkan-dev libsqlite3-dev libpng-dev \
-     libfreetype-dev zlib1g-dev
-   ```
-   If something is still missing, the build says what and the command to install it.
-2. From the [Releases page](https://github.com/santiagovalencia109/Wario-Land-Shake-It-Native-PC/releases),
-   download **`WarioRecomp-<version>-linux.tar.gz`** (not *Source code*, and not the separate
-   `WarioLauncher-linux-x64`, which is only for the launcher's automatic update).
-3. Extract it, e.g. `tar -xzf WarioRecomp-<version>-linux.tar.gz -C ~/`, and open **`WarioLauncher`** inside the
-   extracted folder (double click, or `./WarioLauncher` in a terminal).
-4. Same as on Windows: **Install** → pick your disc image → wait for the build → **PLAY**.
-
-Without the launcher, from a terminal in the extracted folder:
-
-```
-tools/build-wario.sh --disc ~/path/to/game.iso    imports the disc and builds the port
-Play/WarioRecomp                                   starts the game
-```
-
-Saves, settings and the logs are in the same places as on Windows (`Play/UserData`).
-
-**Steam Deck (SteamOS)**
-
-Use the Linux download in **Desktop Mode**, not the Windows one through Proton: the Windows build runs on
-PowerShell and its own compiler, which don't work under Proton/Wine. SteamOS can't install the build tools
-(its system is read-only), so step 1 is skipped: the build notices it and runs by itself inside a
-[distrobox](https://distrobox.it) container with Ubuntu 24.04 (distrobox comes with SteamOS 3.5 and later). The
-first build downloads about 1 GB more for that container and needs internet. After that, **PLAY** works as usual,
-and to play in Game Mode add `Play/WarioRecomp` as a non-Steam game (Steam → *Add a Non-Steam Game*).
-
-## Android (experimental)
+An unofficial native Android port of *Wario Land: Shake It!* (Wii, 2008, US release `RWLE01`). It is a fork of
+[WarioRecomp](https://github.com/santiagovalencia109/Wario-Land-Shake-It-Native-PC) by **Santiago109**, where the
+PC version lives. The game's PowerPC code is **statically recompiled** to C++ with
+[WiiCompiled](https://github.com/patchzyy/Wiicompiled) and runs as a regular Android app, **not in an emulator**.
 
 This fork builds the port for Android phones. It runs natively, not in an emulator, with the same recompiled
 game code as the PC version.
@@ -148,15 +16,15 @@ There is **no APK to download, and none will be published**: an APK contains cod
 every user builds their own on a PC, from **their own copy** of the game, and keeps it for their own devices.
 Please don't share it.
 
-**Requirements**
+## Requirements
 
 - A 64-bit phone with Android 11 or later and Vulkan. Tested on one phone so far: ASUS Zenfone 10 (Adreno 740,
   Android 15).
-- A Linux PC with the tools from [How to play (Linux)](#how-to-play-linux-experimental), plus the Android SDK
-  with NDK 28.2, JDK 17 and Gradle 8.9 or later.
+- A Linux PC with clang, CMake 3.25+, Ninja, the .NET 8 SDK and SDL's development libraries (`tools/build-wario.sh`
+  says what is missing), plus the Android SDK with NDK 28.2, JDK 17 and Gradle 8.9 or later.
 - Your own *Wario Land: Shake It!* (US, `RWLE01`, unmodified).
 
-**Building**
+## Building
 
 ```bash
 tools/build-wario.sh --disc /path/to/game.iso   # translates the game (once)
@@ -168,7 +36,7 @@ adb install -r android/app/build/outputs/apk/release/app-release.apk
 or `.wbfs` (it needs about 8 GB free while importing), or **CHOOSE FOLDER** for an already extracted game. Then
 press **PLAY**.
 
-**In the app**
+## In the app
 
 | Tab | What's there |
 |---|---|
@@ -186,111 +54,32 @@ returns to the launcher.
 Custom GPU drivers are third-party code that runs inside the game. If the game stops starting after you choose
 one, select **System default** on the **GPU Driver** tab.
 
-## Controls
+## Status
 
-| Action (sideways Wii Remote) | Keyboard | DualSense / PlayStation |
-|---|---|---|
-| Move | Arrow keys | D-pad |
-| Jump (2 button) | X / Space | ✕ |
-| Run / attack (1 button) | Z / Left Shift | ○ / □ |
-| A button | A | △ |
-| Shake | C / Left Ctrl | L2 / R2 |
-| Tilt left / right | Q / E | L1 / R1 |
-| Tilt / aim with the stick | — | Left stick |
-| + (pause) | Enter / Esc | Options |
-| − | - / Tab | Create |
-| Motion sensors off / on | — | Touchpad click |
-| Skip the intro | Enter / Space / X | ✕ / ○ / Options |
+Working on the tested phone: boot, intro (and skipping it), menus, the on-screen buttons, audio, custom GPU drivers
+and disc import. Still to test or to do:
 
-Xbox and Nintendo controllers use the same button positions. In game, **F10** opens the port's menu and **F11**
-toggles window / fullscreen. Everything can be remapped on the launcher's **Controls** page, where you can also
-choose whether the left stick tilts/aims or moves, and invert the sensor axes.
+- Playing through the whole game, and how it performs in every level.
+- Other phones and GPUs.
+- Tilt and shake everywhere the game asks for them.
+- Gamepads, and leaving the app and coming back.
 
-## The launcher
-
-| Page | What's there |
-|---|---|
-| Home | Quick settings, game status and the PLAY button |
-| Display | Window mode, window size, aspect ratio, full 16:9 in levels, VSync, FPS counter |
-| Graphics | Render resolution, frame interpolation, Direct3D 12 / Vulkan, GPU compatibility, textures |
-| Audio | Master volume, mute, audio mixing thread |
-| Game | Game folder, disc import, saves folder, game language, intro, save backups |
-| Controls | Keyboard and gamepad mapping per action, motion and sensors, rumble |
-| Advanced | Launcher language, desktop shortcut, folders, clear the shader cache, credits |
-| Install | Import the disc and build / rebuild the port |
-| Log | The latest game log, ready to paste into an *issue* |
-
-Until the port is installed, only **Install** and **Log** are available. The language button at the bottom of
-the left menu switches English / Spanish at any time. Settings are stored in `Play\UserData\Config.toml` (the
-in-game F10 menu changes the same values). The header image and the icon live in `local-assets\`
-(`launcher_banner.jpg`, `wario.ico`); both use fan art by **Dreaminerryday**. To use your own header,
-put a `launcher_banner.jpg` or `.png` in `Play\UserData\`.
-
-## Saves
-
-Saves are in `Play\UserData\NAND\title\00010000\52574c45\data` (`WLS.bin` and `banner.bin`), or in the folder
-you choose on the **Game** page. Before every start the launcher copies them to `Play\UserData\SaveBackups`, and
-**Game → Restore** goes back to an earlier copy.
-
-## Updating
-
-The launcher checks for a new version when it starts (and on **Install → Check for updates**). It downloads
-only the code from this repository, never any game data, and then rebuilds on your PC: a quick rebuild
-(minutes) when the change only touches the runtime, or a full one (15 to 45 minutes) when the translation
-changed. Your imported game, saves and settings are kept (they are all in `Play\UserData`).
-
-If you already have a version installed you don't need to download anything: accept the update in the launcher.
-From 0.2.0 on the launcher also updates itself (an older launcher is replaced and reopened when the rebuild
-finishes). You can also unzip a new release zip over the old folder and rebuild from **Install**.
-
-For maintainers: bump `version` in `version.json`, and set `quick_from` to the oldest version that can
-still use a quick rebuild (set it to the new version when the translation changes).
-
-## Building from source
-
-The launcher does all of this for you; by hand it is:
-
-```
-Build-WarioRecomp.cmd         downloads missing tools, translates the game, builds it and runs a 60 s test
-Quick-Rebuild.cmd             rebuilds without translating or downloading again
-Build-Launcher.cmd            builds the launcher (.NET 10 SDK)
-Make-Release.cmd              makes dist\WarioRecomp-<version>.zip (with nothing from the game)
-```
-
-On Linux: `tools/build-wario.sh` (the port; `--skip-translate` for the quick rebuild), `tools/build-launcher.sh`
-and `tools/make-package.sh` (dist/WarioRecomp-<version>-linux.tar.gz). Pushing a `v<version>` tag builds both
-packages on GitHub Actions and publishes the release (`.github/workflows/release.yml`).
-
-The first time, point the build at your game: import it in the launcher, or run
-`tools\build-wario.ps1 -GameData D:\path\to\DATA` (the folder with `sys\main.dol`).
+## Repository
 
 | Folder | Contents |
 |---|---|
+| `android/` | The Android app: launcher, touch controls, motion (Java) |
 | `fw/` | The parts of WiiCompiled the build uses: the C# translator and the dependency scripts |
 | `projects/wario/` | Translation setup: `recomp.yml`, the function map and the verified Wario addresses |
 | `runtime/` | The runtime adapted to Wario (adapted from WiiCompiled's runtime) |
 | `aurora/` | Aurora, the Wii GX graphics layer (adapted from WiiCompiled's copy) |
-| `tools/` | Build scripts (port, launcher, release package) |
-| `android/` | The Android app: launcher, touch controls, motion (Java) |
-| `launcher-avalonia/` | The launcher (C# / Avalonia, Windows and Linux) |
-| `launcher/` | The previous launcher (C# WinForms, Windows only; up to 0.2.0) |
-| `local-assets/` | Launcher icon and header image (fan art by Dreaminerryday) |
-| `screenshots/` | The images in this README |
+| `tools/` | Build scripts |
 
-## Status
-
-Working: boot, intro (and skipping it), menus, saves (create, load, save), the world map, the levels tested so
-far, audio, 16:9, gamepad and keyboard. Still to test or to do:
-
-- Playing through the whole game (bosses, every level and the 12 story movies).
-- Linux: more distributions and graphics drivers, and performance on native Linux.
-- The DualSense accelerometer, and shaking everywhere the game asks for it.
-- Separate music, sound effects and voice volumes.
-- An HD texture pack.
+The PC launchers and scripts from the original project are still in the repository, unchanged.
 
 ## Credits
 
-- **Santiago109** — the port.
+- **Santiago109** — [WarioRecomp](https://github.com/santiagovalencia109/Wario-Land-Shake-It-Native-PC), the PC port this fork is based on.
 - **Dreaminerryday** — the Wario fan art used for the launcher header and the icon.
 - **[WiiCompiled](https://github.com/patchzyy/Wiicompiled)** — patchzyy and contributors: recompiler and runtime (GPL-3.0).
 - **Aurora** — Luke Street: Wii GX graphics on WebGPU (MIT). Dawn, SDL3 and the other components are listed in
@@ -298,7 +87,7 @@ far, audio, 16:9, gamepad and keyboard. Still to test or to do:
 - **[nod / nodtool](https://github.com/encounter/nod)** — Luke Street: Wii disc image reading (MIT).
 - **[libadrenotools](https://github.com/bylaws/libadrenotools)** — Billy Laws: custom GPU drivers on Android (BSD-2-Clause).
 - **[Dolphin Emulator](https://dolphin-emu.org)** — Wii SDK function signature database (GPL-2.0+).
-- **[llvm-mingw](https://github.com/mstorsjo/llvm-mingw)**, **CMake**, **Ninja** and **.NET** — building.
+- **CMake**, **Ninja**, **.NET** and the **Android NDK** — building.
 
 ## License
 
